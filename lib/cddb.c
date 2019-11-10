@@ -50,6 +50,13 @@ void libcddb_init(void)
         cddb_set_server_port(cddb_search_conn, 80);
         cddb_set_http_path_query(cddb_search_conn, "/freedb_search.php");
     }
+#if WIN32
+    {
+        WSADATA wsd;
+        WSAStartup(WINSOCK_VERSION, &wsd);
+    }
+#endif
+
 }
 
 void libcddb_shutdown(void)

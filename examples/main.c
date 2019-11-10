@@ -22,7 +22,10 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
+#if !_MSC_VER
 #include <unistd.h>
+#endif
+#include <getopt.h>
 #include "main.h"
 
 /* command-line option string */

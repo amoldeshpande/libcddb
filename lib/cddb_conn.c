@@ -100,6 +100,13 @@ cddb_conn_t *cddb_new(void)
         c->use_cache = CACHE_ON;
         /* construct cache dir '$HOME/[DEFAULT_CACHE]' */
         s = getenv("HOME");
+#if WIN32
+        if (s == NULL)
+        {
+            s = getenv("USERPROFILE");
+        }
+#endif
+
         c->cache_dir = (char*)malloc(strlen(s) + 1 + sizeof(DEFAULT_CACHE) + 1);
         sprintf(c->cache_dir, "%s/%s", s, DEFAULT_CACHE);
         c->cache_read = FALSE;
@@ -704,7 +711,12 @@ void cddb_disconnect(cddb_conn_t *c)
 {
     cddb_log_debug("cddb_disconnect()");
     if (CONNECTION_OK(c)) {
+#ifdef WIN32
+        closesocket(c->socket);
+#else
         close(c->socket);
+#endif
+
         c->socket = -1;
     }
     cddb_errno_set(c, CDDB_ERR_OK);

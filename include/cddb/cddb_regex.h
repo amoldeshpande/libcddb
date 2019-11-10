@@ -34,7 +34,11 @@
 #include <unistd.h>
 #endif
 #include <sys/types.h>          /* need for MacOS X */
+#if PCRE_POSIX
+#include <pcre2posix.h>
+#else
 #include <regex.h>
+#endif
 
 
 extern regex_t *REGEX_TRACK_FRAME_OFFSETS;
